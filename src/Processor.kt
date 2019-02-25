@@ -14,6 +14,10 @@ class Processor(
                 FORWARD -> executeForward(position)
                 else -> position // Unrecognised command, so keep existing position
             }
+
+            if (!grid.setRobotPosition(position)) {
+                return@forEach
+            }
         }
     }
 
@@ -31,9 +35,9 @@ class Processor(
     private fun executeForward(current: Position): Position =
         when (current.direction) {
             EAST -> current.copy(x = current.x + 1)
-            SOUTH -> current.copy(x = current.y - 1)
+            SOUTH -> current.copy(y = current.y - 1)
             WEST -> current.copy(x = current.x - 1)
-            NORTH -> current.copy(x = current.y + 1)
+            NORTH -> current.copy(y = current.y + 1)
             else -> current
         }
 
