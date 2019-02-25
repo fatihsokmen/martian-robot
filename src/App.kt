@@ -1,8 +1,8 @@
 fun main(args: Array<String>) {
 
     // Input
-    print("Grid dimensions:")
-    val (width, height) = readLine()!!.split(' ')
+    print("Grid upper coordinates:")
+    val (upperX, upperY) = readLine()!!.split(' ')
 
     print("Initial position:")
     val (x, y, direction) = readLine()!!.split(' ')
@@ -11,7 +11,7 @@ fun main(args: Array<String>) {
     val commands = readLine()!!
 
     val grid = Grid(
-        width.toInt(), height.toInt()
+        upperX.toInt(), upperY.toInt()
     )
     val initialPosition = Position(
         x.toInt(),
@@ -25,5 +25,10 @@ fun main(args: Array<String>) {
 
 
     // Output
-    println(grid.current.toString())
+    val lastSeenPosition = grid.current
+    if (lastSeenPosition != Grid.LOST) {
+        println(grid.current)
+    } else {
+        println("${grid.dropOffPosition} LOST" )
+    }
 }

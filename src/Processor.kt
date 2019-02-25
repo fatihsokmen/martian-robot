@@ -7,7 +7,7 @@ class Processor(
     fun execute() {
         var position = initialPosition.copy()
 
-        commands.forEach { command ->
+        for (command in commands) {
             position = when (command) {
                 LEFT -> executeLeft(position)
                 RIGHT -> executeRight(position)
@@ -15,9 +15,8 @@ class Processor(
                 else -> position // Unrecognised command, so keep existing position
             }
 
-            if (!grid.setRobotPosition(position)) {
-                return@forEach
-            }
+            val dropOff = grid.setRobotPosition(position)
+            if (dropOff) break
         }
     }
 
