@@ -41,7 +41,6 @@ fun main(args: Array<String>) {
     // Run
     val processor = Processor(grid)
     robots.forEach { robot ->
-        grid.resetMoves()
         processor.execute(robot)
 
         // Output

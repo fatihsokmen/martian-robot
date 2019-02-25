@@ -3,6 +3,8 @@ class Processor(
 ) {
 
     fun execute(robot: Robot) {
+        grid.resetMoves()
+
         var position = robot.initialPosition
 
         for (command in robot.commands) {
