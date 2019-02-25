@@ -4,31 +4,53 @@ fun main(args: Array<String>) {
     print("Grid upper coordinates:")
     val (upperX, upperY) = readLine()!!.split(' ')
 
-    print("Initial position:")
-    val (x, y, direction) = readLine()!!.split(' ')
+    val robots = mutableListOf<Robot>()
 
-    print("Commands:")
-    val commands = readLine()!!
+    var numberOfRobots = 1
+    do {
+        print("Initial position of Robot #$numberOfRobots:")
+        val position = readLine()
+
+        if (position.isNullOrEmpty()) {
+            break
+        }
+
+        val (x, y, direction) = position.split(' ')
+
+        print("Commands of Robot #$numberOfRobots:")
+
+        val initialPosition = Position(
+            x.toInt(),
+            y.toInt(),
+            direction.first()
+        )
+
+        val robot = Robot(initialPosition, readLine()!!.toList())
+
+        robots.add(robot)
+
+        numberOfRobots++
+
+    } while (true)
+
 
     val grid = Grid(
         upperX.toInt(), upperY.toInt()
     )
-    val initialPosition = Position(
-        x.toInt(),
-        y.toInt(),
-        direction.first()
-    )
 
     // Run
-    val processor = Processor(grid, initialPosition, commands.toList())
-    processor.execute()
+    val processor = Processor(grid)
+    robots.forEach { robot ->
+        grid.resetMoves()
+        processor.execute(robot)
 
+        // Output
+        val lastSeenPosition = grid.lastSeenPosition
+        if (lastSeenPosition != Grid.LOST) {
+            println(grid.lastSeenPosition)
+        } else {
+            println("${grid.dropOffPosition} LOST")
+        }
 
-    // Output
-    val lastSeenPosition = grid.current
-    if (lastSeenPosition != Grid.LOST) {
-        println(grid.current)
-    } else {
-        println("${grid.dropOffPosition} LOST" )
     }
 }

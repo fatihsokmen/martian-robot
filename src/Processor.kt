@@ -1,13 +1,11 @@
 class Processor(
-    private val grid: Grid,
-    private val initialPosition: Position,
-    private val commands: List<Char>
+    private val grid: Grid
 ) {
 
-    fun execute() {
-        var position = initialPosition.copy()
+    fun execute(robot: Robot) {
+        var position = robot.initialPosition
 
-        for (command in commands) {
+        for (command in robot.commands) {
             position = when (command) {
                 LEFT -> executeLeft(position)
                 RIGHT -> executeRight(position)
@@ -32,12 +30,16 @@ class Processor(
         } ?: current
 
     private fun executeForward(current: Position): Position =
-        when (current.direction) {
-            EAST -> current.copy(x = current.x + 1)
-            SOUTH -> current.copy(y = current.y - 1)
-            WEST -> current.copy(x = current.x - 1)
-            NORTH -> current.copy(y = current.y + 1)
-            else -> current
+        if (grid.isDropOffPosition(current)) {
+            current
+        } else {
+            when (current.direction) {
+                EAST -> current.copy(x = current.x + 1)
+                SOUTH -> current.copy(y = current.y - 1)
+                WEST -> current.copy(x = current.x - 1)
+                NORTH -> current.copy(y = current.y + 1)
+                else -> current
+            }
         }
 
     companion object {
